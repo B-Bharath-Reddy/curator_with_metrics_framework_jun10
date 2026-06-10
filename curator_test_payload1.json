@@ -1,0 +1,166 @@
+{
+    "request_id": "reflector-gen-vs-human-001",
+    "event_id": "96fbe9f5-7900-4558-8a42-e759d02836d1",
+    "tenant_id": "test-DH",
+    "site_id": "radiology",
+    "decision": "CRITICAL_FAIL",
+    "disposition": "edited",
+    "expected_route": "LLM_PATH",
+    "actual_route": "FAST_PATH",
+    "expected_scope_key": "DX:CHEST:GENERAL_COMPLEX",
+    "actual_scope_key": "DX:CHEST:PNEUMOTHORAX_SIMPLE",
+    "impression_text": null,
+    "generated_impression": "1. Severe bilateral pneumothorax. 2. Cardiomegaly (CTR ~54%). 3. Left upper lobe mass suspicious for malignancy. 4. No pleural effusion.",
+    "final_impression": "1. Severe right pneumothorax. 2. No mediastinal shift. 3. Left lung mass noted. 4. No pleural effusion.",
+    "human_impression": "1. Severe bilateral pneumothorax. 2. Cardiomegaly (CTR ~54%). 3. Left upper lobe mass suspicious for malignancy. 4. No pleural effusion.",
+    "has_embedding": true,
+    "issues_json": [
+        {
+            "code": "BAD_ROUTE",
+            "evidence": {
+                "actual_route": "FAST_PATH",
+                "actual_scope_key": "DX:CHEST:PNEUMOTHORAX_SIMPLE",
+                "expected_route": "LLM_PATH",
+                "expected_scope_key": "DX:CHEST:GENERAL_COMPLEX",
+                "reasons": ["bilateral pneumothorax", "severe pneumothorax", "large pneumothorax mentioned"]
+            },
+            "message": "Expected LLM_PATH but Generator used FAST_PATH.",
+            "severity": "critical"
+        },
+        {
+            "code": "MISSING_BILATERAL_PNEUMOTHORAX",
+            "evidence": null,
+            "message": "Bilateral pneumothorax is present but impression does not mention bilateral.",
+            "severity": "critical"
+        }
+    ],
+    "input_payload_json": {
+        "actual_route": "FAST_PATH",
+        "actual_scope_key": "DX:CHEST:PNEUMOTHORAX_SIMPLE",
+        "case": {
+            "accession_number": "CXR-TEST-001",
+            "clinical_indication": null,
+            "comparison": null,
+            "exam": {
+                "body_part": "CHEST",
+                "laterality": null,
+                "modality": "DX",
+                "procedure_code": null,
+                "projection": "PA and lateral"
+            },
+            "history": null,
+            "patient": null,
+            "study_instance_uid": "1.2.3.4.5"
+        },
+        "decision": "CRITICAL_FAIL",
+        "expected_route": "LLM_PATH",
+        "expected_scope_key": "DX:CHEST:GENERAL_COMPLEX",
+        "generator_response": {
+            "case_ref": null,
+            "output": {
+                "critical_results": null,
+                "impression_structured": {},
+                "impression_text": "1. Severe right pneumothorax. 2. No mediastinal shift. 3. Left lung mass noted. 4. No pleural effusion."
+            },
+            "provenance": {
+                "playbook_id": null,
+                "playbook_version": null,
+                "retrieved_items": null,
+                "route": "FAST_PATH",
+                "scope_key": "DX:CHEST:PNEUMOTHORAX_SIMPLE"
+            },
+            "quality": null,
+            "request_id": "gen-compare-001",
+            "trace": null
+        },
+        "impression_text": "1. Severe right pneumothorax. 2. No mediastinal shift. 3. Left lung mass noted. 4. No pleural effusion.",
+        "inputs": {
+            "attached_docs": [
+                {
+                    "text": "1. Severe bilateral pneumothorax. 2. Cardiomegaly (CTR ~54%). 3. Left upper lobe mass suspicious for malignancy. 4. No pleural effusion.",
+                    "type": "human_radiologist_report"
+                }
+            ],
+            "observation_payload": {
+                "critical_flags": null,
+                "key_measurements": null,
+                "structured_findings": [
+                    {
+                        "confidence": null,
+                        "evidence": null,
+                        "label": "Pneumothorax",
+                        "location": "bilateral",
+                        "measurements": null,
+                        "presence": "present",
+                        "severity": "severe"
+                    },
+                    {
+                        "confidence": null,
+                        "evidence": null,
+                        "label": "Cardiomegaly",
+                        "location": null,
+                         "measurements": null,
+                        "presence": "present",
+                        "severity": null
+                    },
+                    {
+                        "confidence": null,
+                        "evidence": null,
+                        "label": "Lung mass",
+                        "location": "left upper lobe",
+                        "measurements": {
+                            "size_mm": 25.0,
+                            "tolerance_pct": 10.0
+                        },
+                        "presence": "present",
+                        "severity": null
+                    },
+                    {
+                        "confidence": null,
+                        "evidence": null,
+                        "label": "Pleural effusion",
+                        "location": null,
+                        "measurements": null,
+                        "presence": "absent",
+                        "severity": null
+                    }
+                ]
+            },
+            "source_text": {
+                "draft_impression_text": "1. Severe bilateral pneumothorax. 2. Cardiomegaly (CTR ~54%). 3. Left upper lobe mass suspicious for malignancy. 4. No pleural effusion.",
+                "findings_text": "Large bilateral pneumothorax with enlarged cardiac silhouette (CTR 54%). Left upper lobe mass noted."
+            }
+        },
+        "issues": [
+            {
+                "code": "BAD_ROUTE",
+                "evidence": {
+                    "actual_route": "FAST_PATH",
+                    "actual_scope_key": "DX:CHEST:PNEUMOTHORAX_SIMPLE",
+                    "expected_route": "LLM_PATH",
+                    "expected_scope_key": "DX:CHEST:GENERAL_COMPLEX",
+                    "reasons": ["bilateral pneumothorax", "severe pneumothorax", "large pneumothorax mentioned"]
+                },
+                "message": "Expected LLM_PATH but Generator used FAST_PATH.",
+                "severity": "critical"
+            },
+            {
+                "code": "MISSING_BILATERAL_PNEUMOTHORAX",
+                "evidence": null,
+                "message": "Bilateral pneumothorax is present but impression does not mention bilateral.",
+                "severity": "critical"
+            }
+        ],
+        "latency_ms": 1073.52,
+        "request_id": "reflector-gen-vs-human-001",
+        "reward_signal": {
+            "labels": ["BAD_ROUTE", "MISSING_BILATERAL_PNEUMOTHORAX"],
+            "reason": "CRITICAL_FAIL: 2 issue(s), 2 critical.",
+            "score": 0.15,
+            "send_to_curator": true
+        },
+        "site_id": "radiology",
+        "tenant_id": "test-DH",
+        "timestamp": "2026-05-08T07:38:09.006720+00:00"
+    }
+}
